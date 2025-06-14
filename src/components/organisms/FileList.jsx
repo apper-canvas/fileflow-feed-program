@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'react-toastify';
-import ApperIcon from '@/components/ApperIcon';
-import Button from '@/components/atoms/Button';
-import SearchBar from '@/components/molecules/SearchBar';
-import FileItem from '@/components/molecules/FileItem';
-import ContextMenu from '@/components/molecules/ContextMenu';
-import { fileService } from '@/services';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import SearchBar from "@/components/molecules/SearchBar";
+import FileItem from "@/components/molecules/FileItem";
+import ContextMenu from "@/components/molecules/ContextMenu";
+import { fileService } from "@/services";
 
 const FileList = ({ 
   currentFolderId,
@@ -17,11 +17,14 @@ const FileList = ({
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [viewMode, setViewMode] = useState('list');
+const [viewMode, setViewMode] = useState('list');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [searchQuery, setSearchQuery] = useState('');
   const [contextMenu, setContextMenu] = useState({ isOpen: false, position: { x: 0, y: 0 }, target: null });
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newFileName, setNewFileName] = useState('');
+  const [newFileType, setNewFileType] = useState('txt');
 
   useEffect(() => {
     loadFiles();
@@ -119,12 +122,42 @@ const FileList = ({
       setFiles(prev => prev.filter(f => f.id !== file.id));
       setSelectedFiles(prev => prev.filter(id => id !== file.id));
       toast.success(`Deleted ${file.name}`);
-    } catch (err) {
-      toast.error('Failed to delete file');
+toast.error('Failed to delete file');
     }
   };
 
-  const handleSelectAll = () => {
+  const handleCreateFile = async () => {
+    if (!newFileName.trim()) {
+    if (!newFileName.trim()) {
+      toast.error('Please enter a file name');
+      return;
+    }
+
+    try {
+      const fileExtension = newFileName.includes('.') ? '' : `.${newFileType}`;
+      const fullFileName = newFileName + fileExtension;
+      
+      const newFile = {
+        name: fullFileName,
+        type: newFileType,
+        size: 0,
+        path: currentFolderId ? `/${fullFileName}` : `/${fullFileName}`,
+        parentId: currentFolderId,
+        isFolder: false
+      };
+
+      await fileService.create(newFile);
+      setShowCreateModal(false);
+      setNewFileName('');
+      setNewFileType('txt');
+      loadFiles();
+      toast.success(`Created ${fullFileName}`);
+    } catch (err) {
+      toast.error('Failed to create file');
+    }
+  };
+
+const handleSelectAll = () => {
     if (selectedFiles.length === files.length) {
       setSelectedFiles([]);
     } else {
@@ -255,14 +288,22 @@ const FileList = ({
               <Button
                 variant={viewMode === 'grid' ? 'primary' : 'ghost'}
                 size="small"
-                onClick={() => setViewMode('grid')}
+onClick={() => setViewMode('grid')}
               >
                 <ApperIcon name="Grid3X3" size={16} />
               </Button>
             </div>
           </div>
-
           <div className="flex items-center space-x-2">
+            <Button
+              variant="primary"
+              size="small"
+              onClick={() => setShowCreateModal(true)}
+            >
+              <ApperIcon name="Plus" size={16} className="mr-1" />
+              New File
+            </Button>
+            
             {selectedFiles.length > 0 && (
               <div className="flex items-center space-x-2 mr-4">
                 <span className="text-sm font-medium text-primary">
@@ -358,14 +399,20 @@ const FileList = ({
       </div>
 
       {/* Context Menu */}
-      <ContextMenu
+<ContextMenu
         isOpen={contextMenu.isOpen}
         position={contextMenu.position}
         onClose={() => setContextMenu({ ...contextMenu, isOpen: false })}
         target={contextMenu.target}
-items={[
+        items={[
           { 
-            label: 'Rename', 
+            label: 'New File', 
+            icon: 'Plus', 
+            onClick: () => setShowCreateModal(true),
+            shortcut: 'Ctrl+N'
+          },
+          { 
+            label: 'Rename',
             icon: 'Edit', 
             onClick: (file) => handleContextMenuAction('rename', file),
             shortcut: 'F2'
@@ -391,8 +438,74 @@ items={[
           }
         ]}
       />
+      {/* Create File Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white border-2 border-primary p-6 w-96 max-w-full"
+          >
+            <h3 className="text-lg font-bold text-primary mb-4">Create New File</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-primary mb-1">
+                  File Name *
+                </label>
+                <input
+                  type="text"
+                  value={newFileName}
+                  onChange={(e) => setNewFileName(e.target.value)}
+                  placeholder="Enter file name"
+                  className="w-full px-3 py-2 border-2 border-secondary focus:border-primary focus:outline-none"
+                  autoFocus
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-bold text-primary mb-1">
+                  File Type
+                </label>
+                <select
+                  value={newFileType}
+                  onChange={(e) => setNewFileType(e.target.value)}
+                  className="w-full px-3 py-2 border-2 border-secondary focus:border-primary focus:outline-none"
+                >
+                  <option value="txt">Text File (.txt)</option>
+                  <option value="md">Markdown (.md)</option>
+                  <option value="js">JavaScript (.js)</option>
+                  <option value="html">HTML (.html)</option>
+                  <option value="css">CSS (.css)</option>
+                  <option value="json">JSON (.json)</option>
+                  <option value="xml">XML (.xml)</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-2 mt-6">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setShowCreateModal(false);
+                  setNewFileName('');
+                  setNewFileType('txt');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={handleCreateFile}
+              >
+                Create File
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </>
   );
 };
-
 export default FileList;

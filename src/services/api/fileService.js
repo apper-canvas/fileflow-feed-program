@@ -44,12 +44,14 @@ async create(fileData) {
       return {...newFile};
     }
     
-    // Handle regular file data
+    // Handle new file creation (empty files)
     const newFile = {
       ...fileData,
       id: Date.now().toString(),
+      size: fileData.size || 0,
       modified: new Date().toISOString(),
-      selected: false
+      selected: false,
+      isFolder: false
     };
     this.files.push(newFile);
     return {...newFile};
