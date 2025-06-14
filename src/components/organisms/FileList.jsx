@@ -116,18 +116,19 @@ const [viewMode, setViewMode] = useState('list');
     }
   };
 
-  const handleDeleteFile = async (file) => {
+const handleDeleteFile = async (file) => {
     try {
       await fileService.delete(file.id);
       setFiles(prev => prev.filter(f => f.id !== file.id));
       setSelectedFiles(prev => prev.filter(id => id !== file.id));
       toast.success(`Deleted ${file.name}`);
-toast.error('Failed to delete file');
+    } catch (err) {
+      console.error('Failed to delete file:', err);
+      toast.error(`Failed to delete ${file.name}: ${err.message || 'Unknown error'}`);
     }
   };
 
-  const handleCreateFile = async () => {
-    if (!newFileName.trim()) {
+const handleCreateFile = async () => {
     if (!newFileName.trim()) {
       toast.error('Please enter a file name');
       return;
@@ -153,7 +154,8 @@ toast.error('Failed to delete file');
       loadFiles();
       toast.success(`Created ${fullFileName}`);
     } catch (err) {
-      toast.error('Failed to create file');
+      console.error('Failed to create file:', err);
+      toast.error(`Failed to create file: ${err.message || 'Unknown error'}`);
     }
   };
 
@@ -165,16 +167,21 @@ const handleSelectAll = () => {
     }
   };
 
-  const handleBulkDelete = async () => {
+const handleBulkDelete = async () => {
     if (selectedFiles.length === 0) return;
+    
+    const selectedCount = selectedFiles.length;
     
     try {
       await Promise.all(selectedFiles.map(id => fileService.delete(id)));
       setFiles(prev => prev.filter(f => !selectedFiles.includes(f.id)));
       setSelectedFiles([]);
-      toast.success(`Deleted ${selectedFiles.length} items`);
+      toast.success(`Successfully deleted ${selectedCount} items`);
     } catch (err) {
-      toast.error('Failed to delete selected files');
+      console.error('Failed to delete selected files:', err);
+      toast.error(`Failed to delete selected files: ${err.message || 'Unknown error'}`);
+      // Reload files to ensure UI state is consistent
+      loadFiles();
     }
   };
 
