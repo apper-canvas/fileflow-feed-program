@@ -1,0 +1,112 @@
+[
+  {
+    "id": "1",
+    "name": "Project Proposal.pdf",
+    "type": "pdf",
+    "size": 2457600,
+    "modified": "2024-01-15T10:30:00Z",
+    "path": "/Documents/Projects/Project Proposal.pdf",
+    "parentId": "3",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "2",
+    "name": "Budget Analysis.xlsx",
+    "type": "xlsx",
+    "size": 1536000,
+    "modified": "2024-01-14T16:45:00Z",
+    "path": "/Documents/Projects/Budget Analysis.xlsx",
+    "parentId": "3",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "3",
+    "name": "Meeting Notes.docx",
+    "type": "docx",
+    "size": 524288,
+    "modified": "2024-01-16T09:15:00Z",
+    "path": "/Documents/Meeting Notes.docx",
+    "parentId": "1",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "4",
+    "name": "Profile Picture.jpg",
+    "type": "jpg",
+    "size": 3145728,
+    "modified": "2024-01-12T14:22:00Z",
+    "path": "/Pictures/Profile Picture.jpg",
+    "parentId": "4",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "5",
+    "name": "Vacation Photos.zip",
+    "type": "zip",
+    "size": 52428800,
+    "modified": "2024-01-10T11:30:00Z",
+    "path": "/Pictures/Vacation Photos.zip",
+    "parentId": "4",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "6",
+    "name": "System Backup.tar.gz",
+    "type": "tar.gz",
+    "size": 1073741824,
+    "modified": "2024-01-08T03:00:00Z",
+    "path": "/Downloads/System Backup.tar.gz",
+    "parentId": "5",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "7",
+    "name": "Setup.exe",
+    "type": "exe",
+    "size": 12582912,
+    "modified": "2024-01-13T13:45:00Z",
+    "path": "/Downloads/Setup.exe",
+    "parentId": "5",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "8",
+    "name": "README.md",
+    "type": "md",
+    "size": 8192,
+    "modified": "2024-01-17T08:20:00Z",
+    "path": "/Code/FileFlow/README.md",
+    "parentId": "6",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "9",
+    "name": "index.html",
+    "type": "html",
+    "size": 4096,
+    "modified": "2024-01-16T15:30:00Z",
+    "path": "/Code/FileFlow/index.html",
+    "parentId": "6",
+    "isFolder": false,
+    "selected": false
+  },
+  {
+    "id": "10",
+    "name": "styles.css",
+    "type": "css",
+    "size": 16384,
+    "modified": "2024-01-16T15:25:00Z",
+    "path": "/Code/FileFlow/styles.css",
+    "parentId": "6",
+    "isFolder": false,
+    "selected": false
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "name": "Documents",
+    "path": "/Documents",
+    "parentId": null,
+    "children": ["3"],
+    "expanded": true
+  },
+  {
+    "id": "2",
+    "name": "Desktop",
+    "path": "/Desktop",
+    "parentId": null,
+    "children": [],
+    "expanded": false
+  },
+  {
+    "id": "3",
+    "name": "Projects",
+    "path": "/Documents/Projects",
+    "parentId": "1",
+    "children": [],
+    "expanded": false
+  },
+  {
+    "id": "4",
+    "name": "Pictures",
+    "path": "/Pictures",
+    "parentId": null,
+    "children": [],
+    "expanded": false
+  },
+  {
+    "id": "5",
+    "name": "Downloads",
+    "path": "/Downloads",
+    "parentId": null,
+    "children": [],
+    "expanded": false
+  },
+  {
+    "id": "6",
+    "name": "Code",
+    "path": "/Code",
+    "parentId": null,
+    "children": ["7"],
+    "expanded": false
+  },
+  {
+    "id": "7",
+    "name": "FileFlow",
+    "path": "/Code/FileFlow",
+    "parentId": "6",
+    "children": [],
+    "expanded": false
+  },
+  {
+    "id": "8",
+    "name": "Music",
+    "path": "/Music",
+    "parentId": null,
+    "children": [],
+    "expanded": false
+  },
+  {
+    "id": "9",
+    "name": "Videos",
+    "path": "/Videos",
+    "parentId": null,
+    "children": [],
+    "expanded": false
+  }
+]
