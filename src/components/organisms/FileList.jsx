@@ -363,7 +363,7 @@ const FileList = ({
         position={contextMenu.position}
         onClose={() => setContextMenu({ ...contextMenu, isOpen: false })}
         target={contextMenu.target}
-        items={[
+items={[
           { 
             label: 'Rename', 
             icon: 'Edit', 
@@ -382,7 +382,8 @@ const FileList = ({
             onClick: (file) => handleContextMenuAction('cut', file),
             shortcut: 'Ctrl+X'
           },
-label: 'Delete', 
+          {
+            label: 'Delete', 
             icon: 'Trash2', 
             onClick: (file) => handleContextMenuAction('delete', file),
             shortcut: 'Del',
