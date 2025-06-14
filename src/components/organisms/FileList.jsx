@@ -382,12 +382,11 @@ const FileList = ({
             onClick: (file) => handleContextMenuAction('cut', file),
             shortcut: 'Ctrl+X'
           },
-          { 
-            label: 'Delete', 
+label: 'Delete', 
             icon: 'Trash2', 
             onClick: (file) => handleContextMenuAction('delete', file),
             shortcut: 'Del',
-            danger: true
+            className: 'text-error hover:bg-error/10'
           }
         ]}
       />

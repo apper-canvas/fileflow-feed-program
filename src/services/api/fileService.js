@@ -23,8 +23,28 @@ class FileService {
     return this.files.filter(f => f.parentId === folderId).map(f => ({...f}));
   }
 
-  async create(fileData) {
+async create(fileData) {
     await delay(300);
+    
+    // Handle file upload data
+    if (fileData.file) {
+      const file = fileData.file;
+      const newFile = {
+        id: Date.now().toString(),
+        name: fileData.name || file.name,
+        type: file.name.split('.').pop().toLowerCase(),
+        size: file.size,
+        modified: new Date().toISOString(),
+        path: fileData.path || `/${file.name}`,
+        parentId: fileData.parentId || null,
+        isFolder: false,
+        selected: false
+      };
+      this.files.push(newFile);
+      return {...newFile};
+    }
+    
+    // Handle regular file data
     const newFile = {
       ...fileData,
       id: Date.now().toString(),
