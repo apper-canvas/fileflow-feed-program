@@ -11,9 +11,12 @@ const Sidebar = ({
   isCollapsed = false,
   onToggleCollapse 
 }) => {
-  const [folders, setFolders] = useState([]);
+const [folders, setFolders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [createLoading, setCreateLoading] = useState(false);
 
   useEffect(() => {
     loadFolders();
@@ -33,7 +36,7 @@ const Sidebar = ({
     }
   };
 
-  const handleToggleExpanded = async (folderId) => {
+const handleToggleExpanded = async (folderId) => {
     try {
       const updatedFolder = await folderService.toggleExpanded(folderId);
       setFolders(prev => prev.map(f => 
@@ -44,6 +47,36 @@ const Sidebar = ({
     }
   };
 
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) {
+      toast.error('Please enter a folder name');
+      return;
+    }
+
+    setCreateLoading(true);
+    try {
+      const folderData = {
+        name: newFolderName.trim(),
+        path: `/${newFolderName.trim()}`,
+        parentId: selectedFolderId || null
+      };
+      
+      const newFolder = await folderService.create(folderData);
+      setFolders(prev => [...prev, newFolder]);
+      setShowCreateModal(false);
+      setNewFolderName('');
+      toast.success('Folder created successfully');
+    } catch (err) {
+      toast.error('Failed to create folder');
+    } finally {
+      setCreateLoading(false);
+    }
+  };
+
+  const handleCancelCreate = () => {
+    setShowCreateModal(false);
+    setNewFolderName('');
+  };
   const renderFolderTree = (parentId = null, level = 0) => {
     const folderList = folders
       .filter(folder => folder.parentId === parentId)
@@ -155,16 +188,71 @@ const Sidebar = ({
       </div>
 
       {/* Quick Actions */}
-      {!isCollapsed && (
+{!isCollapsed && (
         <div className="p-3 border-t-2 border-primary bg-white">
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => setShowCreateModal(true)}
             className="w-full flex items-center justify-center py-2 text-sm font-medium text-primary border-2 border-primary hover:bg-primary hover:text-white transition-colors duration-150"
           >
             <ApperIcon name="FolderPlus" size={16} className="mr-2" />
             New Folder
           </motion.button>
+        </div>
+      )}
+      {/* Create Folder Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white border-2 border-primary p-6 w-96 max-w-sm mx-4"
+          >
+            <h3 className="text-lg font-display font-bold text-primary mb-4">
+              Create New Folder
+            </h3>
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-primary mb-2">
+                Folder Name
+              </label>
+              <input
+                type="text"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleCreateFolder()}
+                placeholder="Enter folder name"
+                className="w-full px-3 py-2 border-2 border-secondary focus:border-primary focus:outline-none"
+                autoFocus
+              />
+            </div>
+
+            <div className="flex justify-end space-x-3">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleCancelCreate}
+                disabled={createLoading}
+                className="px-4 py-2 text-sm font-medium text-primary border-2 border-secondary hover:bg-secondary hover:text-white transition-colors duration-150 disabled:opacity-50"
+              >
+                Cancel
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleCreateFolder}
+                disabled={createLoading || !newFolderName.trim()}
+                className="px-4 py-2 text-sm font-medium bg-primary text-white border-2 border-primary hover:bg-primary-dark disabled:opacity-50 flex items-center"
+              >
+                {createLoading && (
+                  <ApperIcon name="Loader2" size={16} className="mr-2 animate-spin" />
+                )}
+                Create
+              </motion.button>
+            </div>
+          </motion.div>
         </div>
       )}
     </motion.div>
