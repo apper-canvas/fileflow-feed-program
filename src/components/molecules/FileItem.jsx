@@ -53,9 +53,9 @@ const FileItem = ({
     return (
       <motion.div
         whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+whileTap={{ scale: 0.98 }}
         className={`relative p-4 border-2 border-primary bg-white cursor-pointer group ${
-          isSelected ? 'bg-accent text-white' : 'hover:bg-primary hover:text-white'
+          isSelected ? 'bg-accent text-white' : 'hover:bg-surface hover:text-secondary'
         }`}
         onClick={() => onSelect(file)}
         onDoubleClick={() => onDoubleClick(file)}
@@ -71,18 +71,18 @@ const FileItem = ({
         
         <div className="flex flex-col items-center text-center pt-6">
           <ApperIcon 
-            name={file.isFolder ? 'Folder' : getFileIcon(file.type)} 
+name={file.isFolder ? 'Folder' : getFileIcon(file.type)} 
             size={32} 
-            className={`mb-2 ${isSelected ? 'text-white' : 'text-primary group-hover:text-white'}`}
+            className={`mb-2 ${isSelected ? 'text-white' : 'text-primary group-hover:text-secondary'}`}
           />
           <p className={`font-medium text-sm break-words ${
-            isSelected ? 'text-white' : 'text-primary group-hover:text-white'
+            isSelected ? 'text-white' : 'text-primary group-hover:text-secondary'
           }`}>
             {file.name}
           </p>
           {!file.isFolder && (
-            <p className={`text-xs mt-1 ${
-              isSelected ? 'text-white' : 'text-secondary group-hover:text-white'
+<p className={`text-xs mt-1 ${
+              isSelected ? 'text-white' : 'text-secondary group-hover:text-secondary'
             }`}>
               {formatFileSize(file.size)}
             </p>
@@ -95,9 +95,9 @@ const FileItem = ({
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
-      whileTap={{ scale: 0.98 }}
+whileTap={{ scale: 0.98 }}
       className={`flex items-center p-3 border-2 border-primary bg-white cursor-pointer group ${
-        isSelected ? 'bg-accent text-white' : 'hover:bg-primary hover:text-white'
+        isSelected ? 'bg-accent text-white' : 'hover:bg-surface hover:text-secondary'
       }`}
       onClick={() => onSelect(file)}
       onDoubleClick={() => onDoubleClick(file)}
@@ -110,14 +110,14 @@ const FileItem = ({
       />
       
       <ApperIcon 
-        name={file.isFolder ? 'Folder' : getFileIcon(file.type)} 
+name={file.isFolder ? 'Folder' : getFileIcon(file.type)} 
         size={20} 
-        className={`mr-3 flex-shrink-0 ${isSelected ? 'text-white' : 'text-primary group-hover:text-white'}`}
+        className={`mr-3 flex-shrink-0 ${isSelected ? 'text-white' : 'text-primary group-hover:text-secondary'}`}
       />
       
       <div className="flex-1 min-w-0">
         <p className={`font-medium truncate ${
-          isSelected ? 'text-white' : 'text-primary group-hover:text-white'
+          isSelected ? 'text-white' : 'text-primary group-hover:text-secondary'
         }`}>
           {file.name}
         </p>
@@ -125,22 +125,22 @@ const FileItem = ({
       
       {!file.isFolder && (
         <>
-          <div className={`w-20 text-right text-sm ${
-            isSelected ? 'text-white' : 'text-secondary group-hover:text-white'
+<div className={`w-20 text-right text-sm ${
+            isSelected ? 'text-white' : 'text-secondary group-hover:text-secondary'
           }`}>
             {formatFileSize(file.size)}
           </div>
           
           <div className={`w-32 text-right text-sm ml-4 ${
-            isSelected ? 'text-white' : 'text-secondary group-hover:text-white'
+            isSelected ? 'text-white' : 'text-secondary group-hover:text-secondary'
           }`}>
             {formatDate(file.modified)}
           </div>
         </>
       )}
       
-      <div className={`w-16 text-right text-sm ml-4 ${
-        isSelected ? 'text-white' : 'text-secondary group-hover:text-white'
+<div className={`w-16 text-right text-sm ml-4 ${
+        isSelected ? 'text-white' : 'text-secondary group-hover:text-secondary'
       }`}>
         {file.type?.toUpperCase() || 'FOLDER'}
       </div>
