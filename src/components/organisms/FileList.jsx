@@ -117,14 +117,36 @@ const [viewMode, setViewMode] = useState('list');
   };
 
 const handleDeleteFile = async (file) => {
+    // Input validation
+    if (!file || !file.id) {
+      toast.error('Invalid file selected for deletion');
+      return;
+    }
+
     try {
+      // Set loading state if available
+      const fileName = file.name || 'Unknown file';
+      
+      // Perform deletion
       await fileService.delete(file.id);
+      
+      // Update state after successful deletion
       setFiles(prev => prev.filter(f => f.id !== file.id));
       setSelectedFiles(prev => prev.filter(id => id !== file.id));
-      toast.success(`Deleted ${file.name}`);
+      
+      // Success notification
+      toast.success(`Successfully deleted ${fileName}`);
     } catch (err) {
-      console.error('Failed to delete file:', err);
-      toast.error(`Failed to delete ${file.name}: ${err.message || 'Unknown error'}`);
+      // Enhanced error logging
+      console.error('Failed to delete file:', {
+        fileId: file.id,
+        fileName: file.name,
+        error: err
+      });
+      
+      // User-friendly error notification
+      const errorMessage = err?.message || err?.toString() || 'Unknown error occurred';
+      toast.error(`Failed to delete ${file.name || 'file'}: ${errorMessage}`);
     }
   };
 
